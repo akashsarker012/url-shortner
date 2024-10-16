@@ -2,11 +2,14 @@ const express = require('express')
 const app = express()
 const port = 3000
 const path = require('path');
+const apiRoutes = require('./routes/routes');
 require('dotenv').config();
 const connectDB = require('./db/db');
 connectDB();
 
 app.use(express.json());
+
+app.use( apiRoutes);
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
