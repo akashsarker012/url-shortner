@@ -2,12 +2,15 @@ const express = require('express')
 const app = express()
 const port = 3000
 const path = require('path');
+const cors = require('cors');
 const apiRoutes = require('./routes/routes');
 require('dotenv').config();
 const connectDB = require('./db/db');
 connectDB();
 
 app.use(express.json());
+
+app.use(cors());
 
 app.use( apiRoutes);
 

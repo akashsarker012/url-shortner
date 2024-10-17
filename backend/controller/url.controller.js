@@ -22,14 +22,24 @@ const getUrl = async (req, res) => {
   const shortid = req.params.shortid;
   const entry = await URL.findOneAndUpdate(
     { shortid: shortid },
-    {$push: { visitHistory: {timestamp: Date.now()} }},
+    { $inc: { visitHistory: 1 } },
     { new: true }
   )
   if (!entry) {
-    return res.status(404).json({ error: "URL not found" });
+    return res.json({ error: "URL not found" });
   }
 
   res.redirect(entry.redirectURL);
 };
 
-module.exports = {shortUrlController, getUrl};
+const getAllUrls = async (req, res) => {
+  try {
+    const url = await URL.find().sort({ createdAt: -1 }).limit(1);
+    res.json(url);
+} catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+}
+};
+
+module.exports = {shortUrlController, getUrl, getAllUrls};
